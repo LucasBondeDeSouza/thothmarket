@@ -22,14 +22,12 @@ export class AppComponent {
   constructor(private http: HttpClient) {}
 
   buscarEndereco() {
-    console.log('CEP digitado:', this.endereco.cep); // Log para depuração
 
     // Verifique se o CEP tem 8 caracteres
     if (this.endereco.cep.length === 8) {
       const url = `https://viacep.com.br/ws/${this.endereco.cep}/json/`;
       this.http.get<any>(url).subscribe({
         next: (data) => {
-          console.log('Dados da API:', data); // Log para depuração
           
           if (!data.erro) {
             this.endereco.logradouro = data.logradouro;
