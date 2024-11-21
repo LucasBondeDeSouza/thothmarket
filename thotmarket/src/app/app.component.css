@@ -116,12 +116,23 @@ main {
     border-radius: 10px;
     border: none;
     padding: 15px 20px;
-    background-color: #5399AE;
+    background-color: #33C5F3;
     width: auto;
     align-self: center;
     cursor: pointer;
     color: #fff;
     margin-top: 25px;
+}
+
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+/* Para o Firefox */
+input[type="number"] {
+    -moz-appearance: textfield;
 }
 
 @media screen and (max-width: 980px) {

@@ -1,13 +1,53 @@
 import { Component } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
+import { HttpClient } from '@angular/common/http';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet],
+  imports: [FormsModule],
   templateUrl: './app.component.html',
-  styleUrl: './app.component.css'
+  styleUrls: ['./app.component.css'],
 })
 export class AppComponent {
   title = 'thotmarket';
+
+  endereco = {
+    cep: '',
+    logradouro: '',
+    bairro: '',
+    cidade: '',
+  };
+
+  constructor(private http: HttpClient) {}
+
+  buscarEndereco() {
+    console.log('CEP digitado:', this.endereco.cep); // Log para depuração
+
+    // Verifique se o CEP tem 8 caracteres
+    if (this.endereco.cep.length === 8) {
+      const url = `https://viacep.com.br/ws/${this.endereco.cep}/json/`;
+      this.http.get<any>(url).subscribe({
+        next: (data) => {
+          console.log('Dados da API:', data); // Log para depuração
+          
+          if (!data.erro) {
+            this.endereco.logradouro = data.logradouro;
+            this.endereco.bairro = data.bairro;
+            this.endereco.cidade = data.localidade;
+          } else {
+            alert('CEP inválido!');
+          }
+        },
+        error: () => {
+          alert('Erro ao buscar o CEP!');
+        },
+      });
+    } else {
+      // Limpar os campos caso o CEP seja inválido
+      this.endereco.logradouro = '';
+      this.endereco.bairro = '';
+      this.endereco.cidade = '';
+    }
+  }
 }
